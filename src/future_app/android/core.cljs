@@ -4,6 +4,15 @@
             [future-app.events]
             [future-app.subs]))
 
+;; Try to interactively do something useful...
+;; (use 'figwheel-sidecar.repl-api)
+;; (start-figwheel!)
+;; (cljs-repl)
+;; (in-ns 'future-app.android.core)
+;; (dispatch [:set-greeting "lolz"])
+
+;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
+
 (def ReactNative (js/require "react-native"))
 
 (def app-registry (.-AppRegistry ReactNative))
@@ -25,12 +34,15 @@
        [image {:source logo-img
                :style  {:width 80 :height 80 :margin-bottom 30}}]
        [touchable-highlight {:style {:background-color "#999" :padding 10 :border-radius 5}
-                             :on-press #(alert "HELLO!")}
+                             :on-press #(alert "Good job!")}
         [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "press me"]]])))
 
 (defn init []
   (dispatch-sync [:initialize-db])
   (.registerComponent app-registry "FutureApp" #(r/reactify-component app-root)))
+
+(defn add-one [x]
+  (+ 1 x))
 
 ;; (require
 ;;  '[cljs.repl :as repl]
