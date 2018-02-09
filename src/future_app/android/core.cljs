@@ -11,7 +11,11 @@
 ;; (in-ns 'future-app.android.core)
 ;; (dispatch [:set-greeting "lolz"])
 
+;; Setup stuff
 ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
+
+;; General guide
+;; https://github.com/gphilipp/react-native-with-clojurescript
 
 (def ReactNative (js/require "react-native"))
 
