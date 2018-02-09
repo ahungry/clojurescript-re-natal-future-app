@@ -6,7 +6,7 @@
 
 ;; Try to interactively do something useful...
 ;; (use 'figwheel-sidecar.repl-api)
-;; (start-figwheel!)
+;; (start-figwheel! "android")
 ;; (cljs-repl)
 ;; (in-ns 'future-app.android.core)
 ;; (dispatch [:set-greeting "lolz"])
@@ -33,9 +33,10 @@
        [text {:style {:font-size 30 :font-weight "100" :margin-bottom 20 :text-align "center"}} @greeting]
        [image {:source logo-img
                :style  {:width 80 :height 80 :margin-bottom 30}}]
+       [text {:style {:font-size 50 :text-align "center"}} "This is pretty dang cool."]
        [touchable-highlight {:style {:background-color "#999" :padding 10 :border-radius 5}
-                             :on-press #(alert "Good job!")}
-        [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "press me"]]])))
+                             :on-press #(alert "Very nice!")}
+        [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "go press me"]]])))
 
 (defn init []
   (dispatch-sync [:initialize-db])
