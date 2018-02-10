@@ -1,5 +1,6 @@
 (ns future-app.android.core
   (:require [reagent.core :as r :refer [atom]]
+            [ajax.core :as ajax :refer [GET]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [future-app.events]
             [future-app.subs]))
@@ -28,7 +29,35 @@
 (def logo-img (js/require "./images/cljs.png"))
 
 (defn alert [title]
-  (.alert (.-Alert ReactNative) title))
+  ;; (dispatch [:set-greeting "Clicked alert..."])
+  ;; (toast "Yummy")
+  (get-ip)
+  ;; (.alert (.-Alert ReactNative) title)
+  )
+
+(defn toast [ip-address]
+  (dispatch [:set-greeting "Received your IP!"])
+  (.show (.-ToastAndroid ReactNative) (str ip-address) (.-LONG (.-ToastAndroid ReactNative)))
+  )
+
+;; (-> (js/fetch "http://10.0.3.2:3000/\" (clj->js {:method \"POST\"}))
+;;     (.then #(.json %)) ;; warning: `.json` returns a promise that resolves to the parsed json body
+;;     (.then js->clj)
+;;     (.then yourhandlerhere)
+;;     (.catch #(js/console.error %)))\"\"}\""))
+
+;; http://cljs.info/cheatsheet/
+(defn get-ip []
+  (-> (js/fetch "https://httpbin.org/ip" (clj->js {:method "GET"}))
+      (.then #(.json %))
+      (.then js->clj)
+      (.then #(toast %))
+      (.catch #(toast "Failure fetching ip!")))
+  ;; cljs.ajax fails: https://github.com/JulianBirch/cljs-ajax/issues/141
+  ;; (GET "https://httpbin.org/ip"
+  ;;      (:handler #(println "yay")
+  ;;                :error-handler #(println "epic fail")))
+  )
 
 (defn app-root []
   (let [greeting (subscribe [:get-greeting])]
@@ -45,17 +74,3 @@
 (defn init []
   (dispatch-sync [:initialize-db])
   (.registerComponent app-registry "FutureApp" #(r/reactify-component app-root)))
-
-(defn add-one [x]
-  (+ 1 x))
-
-;; (require
-;;  '[cljs.repl :as repl]
-;;  '[cemerick.piggieback]
-;;  '[ambly.core :as ambly])
-
-;; (cemeric.piggieback/cljs-repl
-;;  (ambly/repl-env :choose-first-discovered true))
-
-;; (in-ns 'future-app.android.core)
-;; (dispatch [:set-greeting "Wowee"])
